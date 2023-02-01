@@ -22,8 +22,21 @@ connect_db(app)
 db.create_all()
 
 @app.route("/api/images")
-def helloWorld():
+def get_images():
   """ grabs all images from the database and returns as json """
 
-  images = [{"image": "image.jpeg", "image_data": "text", "url": "aws/s3/teamwork.jpeg"}]
-  return jsonify(images = images)
+  images = Image.query.order_by(Image.id).all()
+
+  serialized = [image.serialize() for image in images]
+
+  return jsonify(images = serialized)
+
+
+@app.route("/api/images/<int:id>")
+def get_image(id):
+  """ grabs an image from the database and returns as json """
+
+  image = Image.query.get_or_404(id)
+
+  return jsonify(image = image.serialized())
+

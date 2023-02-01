@@ -41,7 +41,7 @@ class Image(db.Model):
         nullable=False,
         default=db.func.now()
     )
-    times_viewed = db.Column(
+    views = db.Column(
         db.Integer,
         default=0,
         nullable=False
@@ -60,6 +60,18 @@ class Image(db.Model):
 
     def __repr__(self):
         return f'<Image {self.id} {self.title} {self.file_name}>'
+
+    def serialize(self):
+        """ serialize to dictionary """
+        return {
+            "id":self.id,
+            "file_name":self.file_name,
+            "title":self.title,
+            "caption":self.caption,
+            "upload_at":self.upload_at,
+            "views":self.views,
+            "photographer":self.photographer
+        }
 
 
 class EXIFData(db.Model):
