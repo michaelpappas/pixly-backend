@@ -1,9 +1,10 @@
 import os
 from dotenv import load_dotenv
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_cors import CORS
 from models import db, connect_db, Image, EXIFData, Tag, ImageTag
+from pixly_aws import upload_profile_photo
 
 load_dotenv()
 
@@ -40,3 +41,17 @@ def get_image(id):
     image = Image.query.get_or_404(id)
 
     return jsonify(image=image.serialized())
+
+@app.post("/api/images")
+def upload_image():
+    """ post route for uploading image from front end """
+
+    image = request.files.get('File')
+
+    upload_profile_photo(image)
+
+    breakpoint()
+
+
+
+    return "image"
