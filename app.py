@@ -4,7 +4,11 @@ from flask import Flask, jsonify, request
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_cors import CORS
 from models import db, connect_db, Image, EXIFData, Tag, ImageTag
-from pixly_aws import upload_profile_photo
+from pixly_aws import upload_image_to_aws
+from shortuuid import uuid
+
+BUCKET_THUMBNAILS_FOLDER = 'pixly/images/thumbnails/'
+BUCKET_ORIGINALS_FOLDER = 'pixly/images/originals/'
 
 load_dotenv()
 
@@ -47,11 +51,11 @@ def upload_image():
     """ post route for uploading image from front end """
 
     image = request.files.get('File')
+    file_extension = image.filename.split('.')[-1]
+    file_name = f'img_{uuid()}.{file_extension}'
 
-    upload_profile_photo(image)
+    upload_image_to_aws(image, BUCKET_ORIGINALS_FOLDER, file_name)
 
-    breakpoint()
-
-
+    # Test if uploads worked and then add to database
 
     return "image"
