@@ -50,12 +50,24 @@ def get_image(id):
 def upload_image():
     """ post route for uploading image from front end """
 
-    image = request.files.get('File')
-    file_extension = image.filename.split('.')[-1]
+    image_file = request.files.get('imgFile')
+    breakpoint()
+    file_extension = image_file.filename.split('.')[-1]
     file_name = f'img_{uuid()}.{file_extension}'
 
-    upload_image_to_aws(image, BUCKET_ORIGINALS_FOLDER, file_name)
+    upload_status = upload_image_to_aws(image_file, BUCKET_ORIGINALS_FOLDER, file_name)
 
+    if not upload_status:
+        return (jsonify(error="File failed to upload."), 500)
     # Test if uploads worked and then add to database
 
-    return "image"
+    title= request.form["title"]
+    caption= request.form["caption"]
+    photographer= request.form["photographer"]
+
+    image = Image(file_name=file_name, title=title, caption=caption, photographer=photographer)
+    db.session.add(image)
+    db.session.commit()
+
+    serialized = image.serialize()
+    return (jsonify(image = serialized),201)
