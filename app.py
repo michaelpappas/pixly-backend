@@ -6,7 +6,7 @@ from flask_cors import CORS
 from models import db, connect_db, Image, EXIFData, Tag, ImageTag
 from pixly_aws import upload_image_to_aws
 from shortuuid import uuid
-from image_processing import get_exif_data, make_thumbnail
+from image_processing import get_exif_data, make_thumbnail, convert_to_grayscale, resize_image
 
 BUCKET_THUMBNAILS_FOLDER = 'pixly/images/thumbnails/'
 BUCKET_ORIGINALS_FOLDER = 'pixly/images/originals/'
@@ -62,6 +62,17 @@ def upload_image():
     file_extension = image_file.filename.split('.')[-1]
     file_name = f'img_{uuid()}.{file_extension}'
 
+    form_data = request.form
+
+    filter = form_data['filter'] # '', 'bw'
+    resize_percentage = int(form_data['resize']) # 100, 75, 50, 25
+
+    if filter == 'bw':
+        image_file = convert_to_grayscale(image_file)
+
+    if resize_percentage != 100:
+        image_file = resize_image(image_file, resize_percentage)
+
     upload_image_status = upload_image_to_aws(
         image_file,
         BUCKET_ORIGINALS_FOLDER,
@@ -80,9 +91,9 @@ def upload_image():
 
     image = Image(
         file_name=file_name,
-        title=request.form["title"],
-        caption=request.form["caption"],
-        photographer=request.form["photographer"])
+        title=form_data["title"],
+        caption=form_data["caption"],
+        photographer=form_data["photographer"])
 
     db.session.add(image)
     db.session.commit()

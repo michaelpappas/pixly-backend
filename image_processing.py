@@ -27,7 +27,6 @@ def get_exif_data(image_file):
     (img_width, img_height) = img.size
 
     exif_data = img._getexif()
-    # img.close()
     exposure_calc = (
         exif_data and
         exif_data.get(EXIF_DATA_CODES['ExposureTime']) and
@@ -90,5 +89,30 @@ def make_thumbnail(file):
     img.save(in_mem_file, format=img.format)
     in_mem_file.seek(0)
 
-    # img.close()
+    return in_mem_file
+
+def convert_to_grayscale(image_file):
+    """ Given an image file, convert it to grayscale """
+
+    img = Image.open(image_file)
+    converted_img = img.convert('L')
+
+    in_mem_file = io.BytesIO()
+    converted_img.save(in_mem_file, format=img.format)
+    in_mem_file.seek(0)
+
+    return in_mem_file
+
+def resize_image(image_file, percentage):
+    """ Given an image file and desired percentage, resize it """
+
+    img = Image.open(image_file)
+    (img_width, img_height) = img.size
+    new_img_size = (int(img_width * percentage / 100), int(img_height * percentage / 100))
+    resized_img = img.resize(new_img_size)
+
+    in_mem_file = io.BytesIO()
+    resized_img.save(in_mem_file, format=img.format)
+    in_mem_file.seek(0)
+
     return in_mem_file
