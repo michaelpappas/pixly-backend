@@ -75,7 +75,6 @@ def upload_image():
         BUCKET_THUMBNAILS_FOLDER,
         file_name
     )
-
     if not upload_image_status or not upload_thumbnail_status:
         return (jsonify(error="File failed to upload."), 500)
 
@@ -90,6 +89,7 @@ def upload_image():
 
     image_id = image.id
     image_data = get_exif_data(image_file)
+
 
     image_exif_data = EXIFData(
         image_id = image_id,

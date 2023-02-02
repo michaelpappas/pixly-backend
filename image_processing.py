@@ -23,12 +23,11 @@ THUMBNAIL_MAX_SIZE = (200, 200)
 
 def get_exif_data(image_file):
     """ Get EXIF data from image file if available, as well as dimensions """
-
     img = Image.open(image_file)
     (img_width, img_height) = img.size
 
     exif_data = img._getexif()
-    img.close()
+    # img.close()
     exposure_calc = (
         exif_data and
         exif_data.get(EXIF_DATA_CODES['ExposureTime']) and
@@ -91,5 +90,5 @@ def make_thumbnail(file):
     img.save(in_mem_file, format=img.format)
     in_mem_file.seek(0)
 
-    img.close()
+    # img.close()
     return in_mem_file
