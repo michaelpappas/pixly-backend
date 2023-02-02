@@ -129,6 +129,22 @@ class EXIFData(db.Model):
         return f'<EXIFData Image {self.image_id}: {self.image.title}>'
 
 
+    def serialize(self):
+        """ serialize to dictionary """
+        return {
+            "image_id":self.image_id,
+            "height_px":self.height_px,
+            "width_px":self.width_px,
+            "device_manufacturer":self.device_manufacturer,
+            "device_model":self.device_model,
+            "focal_length":self.focal_length,
+            "f_stop":self.f_stop,
+            "exposure":self.exposure,
+            "location":self.location,
+            "taken_at":self.taken_at
+        }
+
+
 class Tag(db.Model):
     """ Model for tags table """
 

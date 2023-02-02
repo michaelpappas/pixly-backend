@@ -6,7 +6,7 @@ from flask_cors import CORS
 from models import db, connect_db, Image, EXIFData, Tag, ImageTag
 from pixly_aws import upload_image_to_aws
 from shortuuid import uuid
-from image_processing import get_exif_data
+from image_processing import get_exif_data, make_thumbnail
 
 BUCKET_THUMBNAILS_FOLDER = 'pixly/images/thumbnails/'
 BUCKET_ORIGINALS_FOLDER = 'pixly/images/originals/'
@@ -45,11 +45,13 @@ def get_image(id):
 
     image = Image.query.get_or_404(id)
 
-    # image_exif_data = image.exif_data
-    # serialized_image = image.serialize()
-    # serialized_image['exif_data'] = image_exif_data.serialize()
+    image_exif_data = image.exif_data[0]
+    serialized_image = image.serialize()
+    serialized_exif_data = image_exif_data.serialize()
+    serialized_exif_data.pop("image_id")
+    serialized_image['exif_data'] = serialized_exif_data
 
-    return jsonify(image=image.serialize())
+    return jsonify(image=serialized_image)
 
 
 @app.post("/api/images")
@@ -60,13 +62,22 @@ def upload_image():
     file_extension = image_file.filename.split('.')[-1]
     file_name = f'img_{uuid()}.{file_extension}'
 
-    upload_status = upload_image_to_aws(
+    upload_image_status = upload_image_to_aws(
         image_file,
         BUCKET_ORIGINALS_FOLDER,
         file_name
     )
 
-    if not upload_status:
+    thumbnail_file = make_thumbnail(image_file)
+
+    upload_thumbnail_status = upload_image_to_aws(
+        thumbnail_file,
+        BUCKET_THUMBNAILS_FOLDER,
+        file_name
+    )
+
+
+    if not upload_image_status or not upload_thumbnail_status:
         return (jsonify(error="File failed to upload."), 500)
 
     image = Image(

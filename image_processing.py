@@ -25,7 +25,7 @@ def get_exif_data(image_file):
     (img_width, img_height) = img.size
 
     exif_data = img._getexif()
-
+    img.close()
     exposure_calc = (
         exif_data and
         exif_data.get(EXIF_DATA_CODES['ExposureTime']) and
@@ -69,3 +69,9 @@ def get_exif_data(image_file):
     }
 
     return image_data_from_file
+
+def make_thumbnail(file):
+    img = Image.open(file)
+    thumbnail_img = img.thumbnail((200,200))
+    img.close()
+    return thumbnail_img
