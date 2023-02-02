@@ -76,7 +76,6 @@ def upload_image():
         file_name
     )
 
-
     if not upload_image_status or not upload_thumbnail_status:
         return (jsonify(error="File failed to upload."), 500)
 

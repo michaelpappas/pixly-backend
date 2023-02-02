@@ -1,3 +1,4 @@
+import io
 from PIL import Image
 from lat_lon_parser import to_dec_deg
 
@@ -17,6 +18,8 @@ GPS_TAG_CODES = {
     'GPSLongitudeRef': 3,
     'GPSLongitude': 4
 }
+
+THUMBNAIL_MAX_SIZE = (200, 200)
 
 def get_exif_data(image_file):
     """ Get EXIF data from image file if available, as well as dimensions """
@@ -61,8 +64,16 @@ def get_exif_data(image_file):
         'height_px': img_height,
         'device_manufacturer': exif_data and exif_data.get(EXIF_DATA_CODES['Make']),
         'device_model': exif_data and exif_data.get(EXIF_DATA_CODES['Model']),
-        'focal_length': exif_data and int(exif_data.get(EXIF_DATA_CODES['FocalLength'])),
-        'f_stop': exif_data and float(exif_data.get(EXIF_DATA_CODES['ApertureValue'])),
+        'focal_length': (
+            exif_data and
+            exif_data.get(EXIF_DATA_CODES['FocalLength']) and
+            int(exif_data.get(EXIF_DATA_CODES['FocalLength']))
+        ),
+        'f_stop': (
+            exif_data and
+            exif_data.get(EXIF_DATA_CODES['ApertureValue']) and
+            float(exif_data.get(EXIF_DATA_CODES['ApertureValue']))
+        ),
         'exposure': exposure_calc,
         'location': gps_coords,
         'taken_at': exif_data and exif_data.get(EXIF_DATA_CODES['DateTime'])
@@ -71,7 +82,14 @@ def get_exif_data(image_file):
     return image_data_from_file
 
 def make_thumbnail(file):
+    """ Given an image file, create a thumbnail for it and return as an
+    in-memory file """
     img = Image.open(file)
-    thumbnail_img = img.thumbnail((200,200))
+    img.thumbnail(THUMBNAIL_MAX_SIZE)
+
+    in_mem_file = io.BytesIO()
+    img.save(in_mem_file, format=img.format)
+    in_mem_file.seek(0)
+
     img.close()
-    return thumbnail_img
+    return in_mem_file

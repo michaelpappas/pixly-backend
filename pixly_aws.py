@@ -33,8 +33,7 @@ def upload_image_to_aws(image, folder_path, file_name):
         s3_client.put_object(
             Body=image,
             Bucket=AWS_BUCKET_NAME,
-            Key=f"{folder_path}{file_name}",
-            ContentType=image.mimetype
+            Key=f"{folder_path}{file_name}"
         )
     except ClientError as e:
         logging.error(e)
