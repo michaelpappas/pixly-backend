@@ -45,6 +45,10 @@ def get_image(id):
 
     image = Image.query.get_or_404(id)
 
+    # image_exif_data = image.exif_data
+    # serialized_image = image.serialize()
+    # serialized_image['exif_data'] = image_exif_data.serialize()
+
     return jsonify(image=image.serialize())
 
 
@@ -76,40 +80,22 @@ def upload_image():
 
     image_id = image.id
     image_data = get_exif_data(image_file)
-    breakpoint()
 
-    # exif_data = EXIFData
+    image_exif_data = EXIFData(
+        image_id = image_id,
+        height_px = image_data['height_px'],
+        width_px = image_data['width_px'],
+        device_manufacturer = image_data['device_manufacturer'],
+        device_model = image_data['device_model'],
+        focal_length = image_data['focal_length'],
+        f_stop = image_data['f_stop'],
+        exposure = image_data['exposure'],
+        location = image_data['location'],
+        taken_at = image_data['taken_at'],
+    )
 
-    # image_exif_data = EXIFData(
-    #     image_id = image_id,
-    #     height_px = image_height,
-    #     width_px = image_width
-    # )
-
-    # device_manufacturer = db.Column(
-    #     db.String(100),
-    #     nullable=True
-    # )
-    # device_model = db.Column(
-    #     db.String(100),
-    #     nullable=True
-    # )
-    # focal_length = db.Column(
-    #     db.Integer,
-    #     nullable=True
-    # )
-    # f_stop = db.Column(
-    #     db.Integer,
-    #     nullable=True
-    # )
-    # exposure = db.Column(
-    #     db.Integer,
-    #     nullable=True
-    # )
-    # location = db.Column(
-    #     db.String(100),
-    #     nullable=True
-    # )
+    db.session.add(image_exif_data)
+    db.session.commit()
 
     serialized = image.serialize()
 

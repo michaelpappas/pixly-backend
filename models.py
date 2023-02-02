@@ -107,7 +107,7 @@ class EXIFData(db.Model):
         nullable=True
     )
     f_stop = db.Column(
-        db.Integer,
+        db.Float,
         nullable=True
     )
     exposure = db.Column(
