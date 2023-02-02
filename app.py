@@ -44,7 +44,7 @@ def get_image(id):
 
     image = Image.query.get_or_404(id)
 
-    return jsonify(image=image.serialized())
+    return jsonify(image=image.serialize())
 
 
 @app.post("/api/images")
