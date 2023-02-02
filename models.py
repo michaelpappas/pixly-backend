@@ -118,6 +118,10 @@ class EXIFData(db.Model):
         db.String(100),
         nullable=True
     )
+    taken_at = db.Column(
+        db.String(100),
+        nullable=True
+    )
 
     ###### INSTANCE METHODS ######
 

@@ -6,6 +6,7 @@ from flask_cors import CORS
 from models import db, connect_db, Image, EXIFData, Tag, ImageTag
 from pixly_aws import upload_image_to_aws
 from shortuuid import uuid
+from image_processing import get_exif_data
 
 BUCKET_THUMBNAILS_FOLDER = 'pixly/images/thumbnails/'
 BUCKET_ORIGINALS_FOLDER = 'pixly/images/originals/'
@@ -72,6 +73,43 @@ def upload_image():
 
     db.session.add(image)
     db.session.commit()
+
+    image_id = image.id
+    image_data = get_exif_data(image_file)
+    breakpoint()
+
+    # exif_data = EXIFData
+
+    # image_exif_data = EXIFData(
+    #     image_id = image_id,
+    #     height_px = image_height,
+    #     width_px = image_width
+    # )
+
+    # device_manufacturer = db.Column(
+    #     db.String(100),
+    #     nullable=True
+    # )
+    # device_model = db.Column(
+    #     db.String(100),
+    #     nullable=True
+    # )
+    # focal_length = db.Column(
+    #     db.Integer,
+    #     nullable=True
+    # )
+    # f_stop = db.Column(
+    #     db.Integer,
+    #     nullable=True
+    # )
+    # exposure = db.Column(
+    #     db.Integer,
+    #     nullable=True
+    # )
+    # location = db.Column(
+    #     db.String(100),
+    #     nullable=True
+    # )
 
     serialized = image.serialize()
 
