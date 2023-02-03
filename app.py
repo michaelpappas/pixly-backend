@@ -32,17 +32,32 @@ db.create_all()
 def get_images():
     """ grabs all images from the database and returns as json """
 
-    search_term  = request.args.get("searchTerm")
-    print("search_term", search_term)
+    search_term  = request.args.get("searchTerm") # search term or None
+
+    is_filtering_width = request.args.get('isFilteringWidth') == 'true'
+
+    min_width = request.args.get('minWidth') # '' or an integer string e.g. '10'
+    min_width = int(min_width) if is_filtering_width and min_width.isnumeric() else 0
+
+    max_width = request.args.get('maxWidth') # '' or an integer string e.g. '10'
+    max_width = int(max_width) if is_filtering_width and max_width.isnumeric() else float('inf')
+
+    # Filter by EXIF data
+    images = db.session.query(Image).join(EXIFData)
+
+    images = images.filter(EXIFData.width_px >= min_width)
+    images = images.filter(EXIFData.width_px <= max_width)
+
     if not search_term:
-        images = Image.query.order_by(Image.id).all()
+        images = images.order_by(Image.id).all()
     else:
-        images = (Image.query.filter(Image.title.ilike(f"%{search_term}%"))
+        images = (images.filter(Image.title.ilike(f"%{search_term}%"))
             .order_by(Image.id)
             .all())
 
         print("Images",images)
 
+    # images = images.all()
 
     serialized = [image.serialize() for image in images]
 
