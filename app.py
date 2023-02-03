@@ -32,7 +32,17 @@ db.create_all()
 def get_images():
     """ grabs all images from the database and returns as json """
 
-    images = Image.query.order_by(Image.id).all()
+    search_term  = request.args.get("searchTerm")
+    print("search_term", search_term)
+    if not search_term:
+        images = Image.query.order_by(Image.id).all()
+    else:
+        images = (Image.query.filter(Image.title.ilike(f"%{search_term}%"))
+            .order_by(Image.id)
+            .all())
+
+        print("Images",images)
+
 
     serialized = [image.serialize() for image in images]
 
