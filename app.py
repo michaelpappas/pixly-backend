@@ -150,3 +150,14 @@ def upload_image():
     serialized = image.serialize()
 
     return (jsonify(image = serialized),201)
+
+@app.patch("/api/images/<int:id>")
+def addView(id):
+    """ increments view count by 1 for image """
+    image = Image.query.get_or_404(id)
+
+    image.views += 1
+
+    db.session.commit()
+
+    return jsonify(views = image.views)
