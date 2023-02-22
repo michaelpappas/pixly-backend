@@ -23,5 +23,5 @@ You'll need Python3 and PostgreSQL ::
 Create pixly database in psql with CREATE DATABASE pixly;
   
 To run the backend run "flask run -p 5002".
-The frontend will be default look for the backend at 5002 or a specified url in your .end file
+The frontend will be default look for the backend at 5002 or a specified url in your .env file
 
