@@ -44,7 +44,7 @@ Development Environment Setup
 Add a `.env` file in the top level directory and include the following ::
 
   SECRET_KEY=
-  DATABASE_URL=postgresql:///pixly
+  DATABASE_URL=
   AWS_ACCESS_KEY_ID=
   AWS_SECRET_ACCESS_KEY=
   AWS_REGION=
