@@ -24,6 +24,12 @@ Set the environment variables:
 touch .env
 # open .env and modify the environment variables
 ```
+or
+```bash
+cp .env.example .env
+# open .env and modify the environment variables
+```
+
 
 ## Table of Contents
 
