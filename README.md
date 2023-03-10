@@ -1,6 +1,5 @@
 # pixly-backend
-Pair Programming with Michael Pappas (@michaelpappas)
-
+RESTful Flask API for for image processing and uploading to AWS S3
 
 
 
