@@ -71,7 +71,7 @@ List of available routes:
 `GET api/images` - get images (optional filtering)\
 `GET api/images/:id` - get image by id\
 `POST api/images` - post image\
-`PATCH api/images:id` - patch image to increment views\
+`PATCH api/images:id` - patch image to increment views
 
 ### Further Improvements
 
