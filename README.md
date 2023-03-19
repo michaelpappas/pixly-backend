@@ -1,11 +1,8 @@
-# pixly-backend
+# Pixly Backend
 RESTful Flask API for for image processing and uploading to AWS S3
 
 
-
-# Pixly Backend
-
-# RESTful API Flask
+## RESTful API Flask
 
 A RESTful image uploading API using Flask and Postgresql
 
@@ -14,6 +11,7 @@ A RESTful image uploading API using Flask and Postgresql
 - [Dev Environment](#development-environment)
 - [Project Structure](#project-structure)
 - [API Endpoints](#api-endpoints)
+- [Further Improvements](#further-improvements)
 
 ## Manual Installation
 
@@ -50,13 +48,19 @@ Add a `.env` file in the top level directory and include the following ::
   AWS_BUCKET_NAME=
 
 
-You'll need Python3 and PostgreSQL ::
+You'll need Python3 and PostgreSQL
 
+```bash
   python3 -m venv venv
   source venv/bin/activate
   pip3 install -r requirements.txt
+  # create a virtual environment and install the dependencies
+  ```
 
-Create pixly database in psql with CREATE DATABASE pixly;
+Create pixly database in psql with
+```sql
+CREATE DATABASE pixly;
+```
 
 To run the backend run "flask run -p 5002".
 The frontend will by default look for the backend at 5002 or a specified url in your .env file
