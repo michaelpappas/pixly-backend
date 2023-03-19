@@ -68,10 +68,10 @@ The frontend will by default look for the backend at 5002 or a specified url in 
 List of available routes:
 
 **Images routes**:\
-`GET api/images` - get images (optional filtering)
-`GET api/images/:id` - get image by id
-`POST api/images` - post image
-`PATCH api/images:id` - patch image to increment views
+`GET api/images` - get images (optional filtering)\
+`GET api/images/:id` - get image by id\
+`POST api/images` - post image\
+`PATCH api/images:id` - patch image to increment views\
 
 ### Further Improvements
 
