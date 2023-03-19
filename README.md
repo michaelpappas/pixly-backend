@@ -5,9 +5,15 @@ RESTful Flask API for for image processing and uploading to AWS S3
 
 # Pixly Backend
 
-# RESTful API Node Express
+# RESTful API Flask
 
 A RESTful image uploading API using Flask and Postgresql
+
+## Table of Contents
+- [Manual Installation](#manual-installation)
+- [Dev Environment](#development-environment)
+- [Project Structure](#project-structure)
+- [API Endpoints](#api-endpoints)
 
 ## Manual Installation
 
@@ -30,15 +36,9 @@ cp .env.example .env
 ```
 
 
-## Table of Contents
 
-- [Dev Environment](#dev-environment)
-- [Project Structure](#project-structure)
-- [API Endpoints](#api-endpoints)
 
-Development Environment Setup
-## dev-environment
-=============================
+## Development Environment
 
 Add a `.env` file in the top level directory and include the following ::
 
@@ -61,7 +61,7 @@ Create pixly database in psql with CREATE DATABASE pixly;
 To run the backend run "flask run -p 5002".
 The frontend will by default look for the backend at 5002 or a specified url in your .env file
 
-## Project Structure
+### Project Structure
 
 ```
 \                       # Root folder
@@ -82,6 +82,15 @@ List of available routes:
 `GET api/images/:id` - get image by id\
 `POST api/images` - post image\
 `PATCH api/images:id` - patch image to increment views\
+
+### Further Improvements
+
+- Write Unittest
+- Build out tags functionality
+- Enable filtering by exif data like manufacturer and device
+- Modify image processing to allow for HEIC image upload and exif processing
+
+
 
 
 
