@@ -1,6 +1,8 @@
 # Pixly Backend
 RESTful Flask/Postgres API for for image processing and uploading to AWS S3
 
+The accompanying frontend repo can be seen [here](https://github.com/michaelpappas/pixly-frontend).
+
 ## Table of Contents
 - [Manual Installation](#manual-installation)
 - [Dev Environment](#development-environment)
